@@ -6,10 +6,10 @@ const { dirname } = require('path');
 
 const connection = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
+    user: 'aplicationuser',
     password: 'Aaf56#54',
-    database: 'nodelogin'
-});
+    database: 'logintest',
+})
 
 const app = express();
 
