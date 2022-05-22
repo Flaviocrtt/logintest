@@ -7,11 +7,10 @@
         <!-- the form awesome library is used to add icons to our form -->
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
         <!-- include the stylesheet file -->
-        <link href="/style.css" rel="stylesheet" type="text/css">
 	</head>
 <body>
     <div>
-        <h1>Welcome</h1>
+        <h1>Welcome <%= username%></h1>
         <form action="/logout" method="post" >
             <input type="submit" value="logout" />
         </form>

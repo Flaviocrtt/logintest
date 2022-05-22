@@ -1,46 +1,39 @@
-const mysql = require('mysql');
 const express = require('express');
-const session = require('express-session');
+const router = express.Router();
 const path = require('path');
-const { dirname } = require('path');
+
+const mysql = require('mysql');
 
 const connection = mysql.createConnection({
     host: 'localhost',
-    user: 'aplicationuser',
+    user: 'root',
     password: 'Aaf56#54',
     database: 'logintest',
-})
+});
 
-const app = express();
 
-app.use(session({
-    secret: 'logintestsecret',
-    resave: true,
-    saveUninitialized: true
-}));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'static')));
+router.use(function (req, res, next) {
+    console.log('Time:', Date.now());
+    next();
+ });
 
-app.get('/', function (request, response) {
+router.get('/', function (request, response) {
 
     if (request.session.loggedin) {
 
-        response.sendFile(path.join(__dirname, "home.html"), function(){
-            response.end();
-        })
+        response.render('home', {username: request.session.username});
     } else {
-        response.sendFile(path.join(__dirname, "login.html"), function(){
-            response.end();
-        })
+
+        response.render('login');
     }
 });
 
-app.post('/auth', (request, response) => {
+router.post('/auth', async (request, response) => {
     let username = request.body.username;
     let password = request.body.password;
     if (username && password) {
-        connection.query('SELECT * FROM accounts WHERE username = ? AND password = ?', [username, password], function (error, results, fields) {
+       
+        connection.query('SELECT * FROM Users WHERE email = ? AND password = ?', [username, password], function (error, results, fields) {
             if (error) throw error;
             if (results.length > 0) {
                 request.session.loggedin = true;
@@ -57,7 +50,7 @@ app.post('/auth', (request, response) => {
     }
 });
 
-app.post('/logout', (request, response) => {
+router.post('/logout', (request, response) => {
     if (request.session.loggedin) {
         request.session.loggedin = false;
         request.session.username = null;
@@ -65,4 +58,4 @@ app.post('/logout', (request, response) => {
     }
 })
 
-app.listen(3000)
+module.exports = router;
