@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="./css/bootstrap.min.css" rel="stylesheet">
+    <title>Create Account</title>
+</head>
+
+<body style="background-color: darkslategrey">
+	<div class="rounded p-4 mt-4 m-auto" style="background-color: lightgray; max-width: 400px;">
+		
+        <form action="/register" method="post">
+            <div class="text-center">
+                <h1>Create Account</h1>
+            </div>
+
+            <div class="mb-3 d-inline-flex w-100">
+
+                <label
+                    for="firstName" 
+                    class="form-label p-2">
+                    first name
+                </label>
+                <input 
+                    type="text" 
+                    name="firstName" 
+                    placeholder="type your first name" 
+                    id="firstName" 
+                    required 
+                    class="form-control"/>
+            </div>
+
+            <div class="mb-3 d-inline-flex w-100">
+
+                <label
+                    for="lastName" 
+                    class="form-label p-2">
+                    last name
+                </label>
+                <input 
+                    type="text" 
+                    name="lastName" 
+                    placeholder="type your last name" 
+                    id="lastName" 
+                    required 
+                    class="form-control"/>
+            </div>
+
+            <div class="mb-3 d-inline-flex w-100">
+
+                <label
+                    for="username" 
+                    class="form-label p-2">
+                    <i class="fas fa-user"></i>
+                </label>
+                <input 
+                    type="text" 
+                    name="username" 
+                    placeholder="Username" 
+                    id="username" 
+                    required 
+                    class="form-control"/>
+            </div>
+
+            <div class="mb-3 d-inline-flex w-100">
+                <label 
+                for="password" 
+                class="form-label p-2">
+                    <i class="fas fa-lock"></i>
+                </label>
+                <input 
+                    type="password" 
+                    name="password" 
+                    placeholder="Password" 
+                    id="password" 
+                    required  
+                    class="form-control"/>				  
+            </div>
+
+            <input type="submit" value="Create Account"  class="btn btn-success w-100 rounded-6">
+            
+            <p class="pt-2">
+                already have an account? 
+                <a href="/login">login</a>
+            </p>
+        </form>
+    </div>
+</body>
+</html>

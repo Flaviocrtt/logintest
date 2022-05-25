@@ -3,6 +3,7 @@ const router = express.Router();
 const path = require('path');
 
 const mysql = require('mysql');
+const { response } = require('express');
 
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -11,17 +12,11 @@ const connection = mysql.createConnection({
     database: 'logintest',
 });
 
-
-router.use(function (req, res, next) {
-    console.log('Time:', Date.now());
-    next();
- });
-
 router.get('/', function (request, response) {
 
     if (request.session.loggedin) {
 
-        response.render('home', {username: request.session.username});
+        response.render('home', {fullName: request.session.fullName});
     } else {
 
         response.render('login');
@@ -36,8 +31,10 @@ router.post('/auth', async (request, response) => {
         connection.query('SELECT * FROM Users WHERE email = ? AND password = ?', [username, password], function (error, results, fields) {
             if (error) throw error;
             if (results.length > 0) {
+                console.log(results);
                 request.session.loggedin = true;
                 request.session.username = username;
+                request.session.fullName = `${results[0].firstName} ${results[0].lastName}`;
                 response.redirect('/');
             } else {
                 response.send('Incorrect Username and/or Password!');
@@ -57,5 +54,31 @@ router.post('/logout', (request, response) => {
         response.redirect('/');
     }
 })
+
+router.get('/createaccount', (request, response) => {
+    response.render('createAccount');
+})
+
+router.post('/register', async (request, response) => {
+    let username = request.body.username;
+    let password = request.body.password;
+    let firstName = request.body.firstName;
+    let lastName = request.body.lastName;
+
+    if (username && password) {
+       
+        connection.query('INSERT INTO Users (email, password, firstName, lastName, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?)', 
+        [username, password, firstName, lastName, new Date(), new Date()], 
+        function (error, results, fields) {
+            if (error) throw error;
+            console.log(results);
+            response.redirect('/');
+            response.end();
+        });
+    } else {
+        response.send('Please enter Username and Password!');
+        response.end();
+    }
+});
 
 module.exports = router;
